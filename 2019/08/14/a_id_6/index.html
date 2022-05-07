@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>MongoDB数据库 | 王杰的技术博客</title>
+  <meta name="description" content="什么是MongoDB ?MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。 MongoDB是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。它支持的数据结构非常松散，是类似json的bson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是它支持的查询语言非常强大，其语法有点类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB数据库">
+<meta property="og:url" content="http://v3n.top/2019/08/14/a_id_6/index.html">
+<meta property="og:site_name" content="志杰的技术博客">
+<meta property="og:description" content="什么是MongoDB ?MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。 MongoDB是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。它支持的数据结构非常松散，是类似json的bson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是它支持的查询语言非常强大，其语法有点类">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-08-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-08-02T07:50:07.571Z">
+<meta property="article:author" content="志杰">
+<meta property="article:tag" content="alipay">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://v3n.top/2019/08/14/a_id_6/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="志杰的技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">王杰的Blog</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md"></h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav menu-highlight">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流技术与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a><span class="category-list-count">27</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/alipay/" rel="tag">alipay</a><span class="tag-list-count">27</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/alipay/" style="font-size: 13px;">alipay</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/01/15/a_id_27/" class="title">Conda搭建python环境</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-01-14T16:00:00.000Z" itemprop="datePublished">2022-01-15</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/22/a_id_26/" class="title">使用Python模仿PC端微信恢复</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-21T16:00:00.000Z" itemprop="datePublished">2021-10-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/10/13/a_id_25/" class="title">双系统Mongo备份与恢复问题(压缩包格式)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-10-12T16:00:00.000Z" itemprop="datePublished">2021-10-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/09/29/a_id_24/" class="title">Linux下设置容器中Redis密码</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-09-28T16:00:00.000Z" itemprop="datePublished">2021-09-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+              </p>
+              <p class="item-title">
+                <a href="/2021/09/27/a_id_23/" class="title">基于ApiDoc快速制作文档</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-09-26T16:00:00.000Z" itemprop="datePublished">2021-09-27</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-a_id_6" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MongoDB数据库
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2019/08/14/a_id_6/" class="article-date">
+	  <time datetime="2019-08-13T16:00:00.000Z" itemprop="datePublished">2019-08-14</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E4%B8%AA%E4%BA%BA%E6%80%BB%E7%BB%93/">个人总结</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/alipay/" rel="tag">alipay</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2019/08/14/a_id_6/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="什么是MongoDB"><a href="#什么是MongoDB" class="headerlink" title="什么是MongoDB ?"></a>什么是MongoDB ?</h2><p>MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。</p>
+<p>MongoDB是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。它支持的数据结构非常松散，是类似json的bson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是它支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。</p>
+<h3 id="主要特点"><a href="#主要特点" class="headerlink" title="主要特点"></a>主要特点</h3><ul>
+<li>MongoDB 是一个面向文档存储的数据库，操作起来比较简单和容易。</li>
+<li>MongoDB支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言。</li>
+<li>MongoDB安装简单。</li>
+</ul>
+<h3 id="Mongdb超时索引介绍"><a href="#Mongdb超时索引介绍" class="headerlink" title="Mongdb超时索引介绍"></a>Mongdb超时索引介绍</h3><p><strong><em>\</em>mongos&gt; db.eventlog.createIndex( { “lastModifiedDate”: 1 }, { expireAfterSeconds: 60 } )**</strong><br><strong><em>\</em>{**</strong><br><strong><em>\</em>“ok” : 1**</strong><br><strong><em>\</em>}**</strong></p>
+<p>\2. 插入4条记录<br><em>mongos&gt; db.eventlog.insert({“title”:”mongodb 1”,”lastModifiedDate”:new Date()})</em><br><em>WriteResult({ “nInserted” : 1 })</em><br><em>mongos&gt; db.eventlog.insert({“title”:”mongodb 2”,”lastModifiedDate”:new Date()})</em><br><em>WriteResult({ “nInserted” : 1 })</em><br><em>mongos&gt; db.eventlog.insert({“title”:”mongodb 3”,”lastModifiedDate”:new Date()})</em><br><em>WriteResult({ “nInserted” : 1 })</em><br><em>mongos&gt; db.eventlog.insert({“title”:”mongodb 4”,”lastModifiedDate”:new Date()})</em></p>
+<p>\3. 查询记录</p>
+<p><em>mongos&gt; db.eventlog.find()</em><br><em>{ “_id” : ObjectId(“5a9697a671d2645a6fa3f9cb”), “title” : “mongodb 1”, “lastModifiedDate” : ISODate(“2018-02-28T11:51:02.804Z”) }</em><br><em>{ “_id” : ObjectId(“5a9697aa71d2645a6fa3f9cc”), “title” : “mongodb 2”, “lastModifiedDate” : ISODate(“2018-02-28T11:51:06.393Z”) }</em><br><em>{ “_id” : ObjectId(“5a9697ad71d2645a6fa3f9cd”), “title” : “mongodb 3”, “lastModifiedDate” : ISODate(“2018-02-28T11:51:09.416Z”) }</em><br><em>{ “_id” : ObjectId(“5a9697c671d2645a6fa3f9ce”), “title” : “mongodb 4”, “lastModifiedDate” : ISODate(“2018-02-28T11:51:34.499Z”) }</em></p>
+<p>大概过了90s，再查询<br><em>mongos&gt; db.eventlog.find()</em><br><em>mongos&gt;</em></p>
+<p>果然同时消失了，说明执行超时删除不是实时的，而是60秒执行一次。</p>
+<h3 id="Mongodb数据库安装"><a href="#Mongodb数据库安装" class="headerlink" title="Mongodb数据库安装"></a>Mongodb数据库安装</h3><p>1、Mongodb数据库官网</p>
+<p>[<a href="http://www.mongodb.com]">http://www.mongodb.com]</a>: </p>
+<h3 id="Mongodb基操作"><a href="#Mongodb基操作" class="headerlink" title="Mongodb基操作"></a>Mongodb基操作</h3><p>1、进入数据库命令</p>
+<blockquote>
+<p>mongodb</p>
+</blockquote>
+<p>2、创建数据库</p>
+<blockquote>
+<p>use 数据库名</p>
+</blockquote>
+<p>3、查看当前数据库</p>
+<blockquote>
+<p>db</p>
+</blockquote>
+<p>4、查看所有数据库</p>
+<blockquote>
+<p>dbs</p>
+</blockquote>
+<p>5、insert() 插入数据</p>
+<blockquote>
+<p>db.workcate.insert({‘name’:’王杰’}) </p>
+<p>db.表名.insert({‘name’:’王杰’}) </p>
+</blockquote>
+<p>6、insertMany() 插入多条数据</p>
+<blockquote>
+<p>db.cao.insertMany([{name:”cao”},{name:”yuan”},{name:”caopeng”}])</p>
+</blockquote>
+<p>7、查看数据</p>
+<blockquote>
+<p>db.表名.find({条件})</p>
+<p>db.表名.find(条件).preety()  # 树状型展示</p>
+</blockquote>
+<p>8、修改表数据</p>
+<blockquote>
+<p>db.表名.update({‘name’：’王杰}，$set：{‘name’：‘王’})</p>
+<p>例子：将所有年龄大于20的改为18</p>
+<p>db.class0.update({age:{$gt:20}},{$set:{age:18}},false,true)</p>
+</blockquote>
+<p>9、查看表名字</p>
+<blockquote>
+<p>db.getCollectionNames()</p>
+</blockquote>
+<p>10、查看数据库名</p>
+<blockquote>
+<p>db.getName()</p>
+</blockquote>
+<h2 id="mongodb常用查询语句"><a href="#mongodb常用查询语句" class="headerlink" title="mongodb常用查询语句"></a>mongodb常用查询语句</h2><p>1、查询所有记录<br>db.userInfo.find();<br>相当于：select* from userInfo;</p>
+<p>2、查询去掉后的当前聚集集合中的某列的重复数据<br>db.userInfo.distinct(“name”);<br>会过滤掉 name 中的相同数据<br>相当于：select distict name from userInfo;</p>
+<p>3、查询 age = 22 的记录<br>db.userInfo.find({“age”: 22});<br>相当于： select * from userInfo where age = 22;</p>
+<p>4、查询 age &gt; 22 的记录<br>db.userInfo.find({age: {$gt: 22}});<br>相当于：select * from userInfo where age &gt;22;</p>
+<p>5、查询 age &lt; 22 的记录<br>db.userInfo.find({age: {$lt: 22}});<br>相当于：select * from userInfo where age &lt;22;</p>
+<p>6、查询 age &gt;= 25 的记录<br>db.userInfo.find({age: {$gte: 25}});<br>相当于：select * from userInfo where age &gt;= 25;</p>
+<p>7、查询 age &lt;= 25 的记录<br>db.userInfo.find({age: {$lte: 25}});</p>
+<p>8、查询 age &gt;= 23 并且 age &lt;= 26 注意书写格式<br>db.userInfo.find({age: {$gte: 23, $lte: 26}});</p>
+<p>9、查询 name 中包含 mongo 的数据 模糊查询用于搜索<br>db.userInfo.find({name: /mongo/});<br>//相当于%%<br>select * from userInfo where name like ‘%mongo%’;</p>
+<p>10、查询 name 中以 mongo 开头的<br>db.userInfo.find({name: /^mongo/});<br>select * from userInfo where name like ‘mongo%’;</p>
+<p>11、查询指定列 name、age 数据<br>db.userInfo.find({}, {name: 1, age: 1});<br>相当于：select name, age from userInfo;<br>当然 name 也可以用 true 或 false,当用 ture 的情况下河 name:1 效果一样，如果用 false 就<br>是排除 name，显示 name 以外的列信息。</p>
+<p>12、查询指定列 name、age 数据, age &gt; 25<br>db.userInfo.find({age: {$gt: 25}}, {name: 1, age: 1});<br>相当于：select name, age from userInfo where age &gt;25;</p>
+<p>13、按照年龄排序 1 升序 -1 降序<br>升序：db.userInfo.find().sort({age: 1});<br>降序：db.userInfo.find().sort({age: -1});</p>
+<p>14、查询 name = zhangsan, age = 22 的数据<br>db.userInfo.find({name: ‘zhangsan’, age: 22});<br>相当于：select * from userInfo where name = ‘zhangsan’ and age = ‘22’;</p>
+<p>15、查询前 5 条数据<br>db.userInfo.find().limit(5);<br>相当于：selecttop 5 * from userInfo;</p>
+<p>16、查询 10 条以后的数据<br>db.userInfo.find().skip(10);<br>相当于：select * from userInfo where id not in (<br>selecttop 10 * from userInfo<br>);</p>
+<p>17、查询在 5-10 之间的数据<br>db.userInfo.find().limit(10).skip(5);<br>可用于分页，limit 是 pageSize，skip 是第几页*pageSize</p>
+<p>18、or 与 查询<br>db.userInfo.find({$or: [{age: 22}, {age: 25}]});<br>相当于：select * from userInfo where age = 22 or age = 25;</p>
+<p>19、findOne 查询第一条数据<br>db.userInfo.findOne();<br>相当于：selecttop 1 * from userInfo;<br>db.userInfo.find().limit(1);</p>
+<p>20、查询某个结果集的记录条数 统计数量<br>db.userInfo.find({age: {$gte: 25}}).count();<br>相当于：select count(*) from userInfo where age &gt;= 20;<br>如果要返回限制之后的记录数量，要使用 count(true)或者 count(非 0)<br>db.users.find().skip(10).limit(5).count(true);</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="http://v3n.top/2019/08/14/a_id_6/" title="MongoDB数据库" target="_blank" rel="external">http://v3n.top/2019/08/14/a_id_6/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">王杰的Blog</span><small class="ml-1x"></small></a></h3>
+        <div>不经历风雨，长不成大树，不受百炼，难以成钢</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2020/03/30/a_id_7/" title="SQLserver简介"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2019/08/03/a_id_5/" title="docker操作容器、镜像、dockerfile"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/Alipay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/WeixinPay.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
